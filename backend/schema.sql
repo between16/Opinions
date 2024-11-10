@@ -1,0 +1,18 @@
+DROP TABLE IF EXISTS User;
+DROP TABLE IF EXISTS Post;
+
+
+CREATE TABLE User (
+  username VARCHAR(30) PRIMARY KEY,
+  user_password VARCHAR(30) NOT NULL
+);
+
+CREATE TABLE Post (
+  post_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  topic VARCHAR (30) NOT NULL,
+  statemant VARCHAR (100) NOT NULL,
+  comment VARCHAR (100) NOT NULL,
+  sentiment FLOAT, 
+  username VARCHAR(30) NOT NULL,
+  FOREIGN KEY (username) REFERENCES User(username)
+);
