@@ -66,6 +66,58 @@ API SECTION
 def hello_world():
     return "<p>Hello, World!</p>"
 
+#login control
+@app.route("/api/login", methods =['POST'])
+def get_data():
+    #client sends username and password
+    data = request.get_json()
+    username = data['username']
+    password = data['password']
+
+
+    db = get_db()
+    cur = db.cursor()
+    #extract the password hash from the database if present
+    cur.execute('SELECT username, user_password FROM User WHERE username = ?', (username,))
+
+    user = cur.fetchone()
+
+    if user is None:   
+        #the query result is empty, the credentials are worng!
+        return jsonify({'message': 'Incorrect'})
+    elif not check_password_hash(user["user_password"], password):
+        #check_password_hash() returned false! the passwords do not match
+        return jsonify({'message': 'Incorrect'})
+    else :
+        #everything is good, the user can login
+        print("login completed")
+        return jsonify({'message': 'Correct'})
+    
+
+
+#sign in a new user
+@app.route("/api/signUp", methods=['POST'])
+def save_data():
+
+    #get username and password from client
+    data = request.get_json()
+    username = data['username']
+    password = data['password']
+
+
+    #since username is a primary key for the User table no duplicates are allowed, so no check is needed, if the username is invalid
+    #the exception will be executed
+    try:
+        db = get_db()
+        cur = db.cursor()
+        cur.execute('INSERT INTO User (username, user_password) VALUES (?, ?)', (username, generate_password_hash(password)))
+        db.commit()
+        print("registretion complited")
+        return jsonify({'message': 'Done'})
+    
+    except Exception as e:
+        # the username was already used
+        return jsonify({'message': 'Error: {}'.format(str(e))})
 
 
 '''
