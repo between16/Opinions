@@ -118,7 +118,32 @@ def save_data():
     except Exception as e:
         # the username was already used
         return jsonify({'message': 'Error: {}'.format(str(e))})
+    
 
+@app.route("/api/addStatement", methods=["POST"])
+def addStatement():
+    data = request.get_json()
+
+    # Check if all necessary fields are present
+    if not all(key in data for key in ["username", "topic", "statement", "comment"]):
+        return jsonify({"message": "Missing required fields"}), 400  # Bad Request
+
+    username = data["username"]
+    topic = data["topic"]
+    statement = data["statement"]
+    comment = data["comment"]
+
+    try:
+        db = get_db()
+        cur = db.cursor()
+        cur.execute('INSERT INTO Post (username, topic, statemant, comment) VALUES (?, ?, ?, ?)', 
+                    (username, topic, statement, comment))
+        db.commit()
+        print("Registration completed")
+        return jsonify({'message': 'Done'}), 200  # Success response
+
+    except Exception as e:
+        return jsonify({'message': f'Error: {str(e)}'}), 500  # Internal Server Error
 
 '''
 File exec
