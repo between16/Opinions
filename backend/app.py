@@ -5,16 +5,13 @@ import os
 import sqlite3
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
+from nlp import sentimentRestult
 
 
 app = Flask(__name__)
 cors = CORS (app, origins="*")
 
 #the secret key is generated through this piece of code:
-# import secrets;
-# print(secrets.token_hex())
-#
-#as suggested from the flask documentation
 app.secret_key = 'a421c210278fd00c726cf138acbe3780410109e3857df5b7475d847cd4813a41'
 
 app.config.from_object(__name__)
@@ -104,7 +101,6 @@ def save_data():
     username = data['username']
     password = data['password']
 
-
     #since username is a primary key for the User table no duplicates are allowed, so no check is needed, if the username is invalid
     #the exception will be executed
     try:
@@ -133,18 +129,24 @@ def addStatement():
     statement = data["statement"]
     comment = data["comment"]
 
+
+    #sentiment analysis result 
+    sentiment = sentimentRestult(comment)
+
+
     try:
         db = get_db()
         cur = db.cursor()
-        cur.execute('INSERT INTO Post (username, topic, statemant, comment) VALUES (?, ?, ?, ?)', 
-                    (username, topic, statement, comment))
+        cur.execute('INSERT INTO Post (username, topic, statemant, sentiment, comment) VALUES (?, ?, ?, ?, ?)', 
+                    (username, topic, statement,sentiment, comment))
         db.commit()
-        print("Registration completed")
+        print("Registration onto database completed")
         return jsonify({'message': 'Done'}), 200  # Success response
 
     except Exception as e:
         return jsonify({'message': f'Error: {str(e)}'}), 500  # Internal Server Error
-    
+
+
 #get all the statements for a specific topic
 @app.route("/api/getStatements", methods=["POST"])
 def getStatements():
