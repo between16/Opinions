@@ -119,7 +119,7 @@ def save_data():
         # the username was already used
         return jsonify({'message': 'Error: {}'.format(str(e))})
     
-
+#Add a new statement and comment to the database
 @app.route("/api/addStatement", methods=["POST"])
 def addStatement():
     data = request.get_json()
@@ -144,6 +144,37 @@ def addStatement():
 
     except Exception as e:
         return jsonify({'message': f'Error: {str(e)}'}), 500  # Internal Server Error
+    
+#get all the statements for a specific topic
+@app.route("/api/getStatements", methods=["POST"])
+def getStatements():
+    # Get the topic from the request JSON
+    data = request.get_json()
+    topic = data.get("topic")
+
+    if not topic:
+        return jsonify({"message": "Topic is required"}), 400  # Bad Request if topic is missing
+
+    db = get_db()
+    cur = db.cursor()
+
+    try:
+        # Query the database to fetch all statements for the specific topic
+        cur.execute('SELECT statemant FROM Post WHERE topic = ?', (topic,))
+        rows = cur.fetchall()
+
+        # If no results, return a message
+        if not rows:
+            print("errore nei dati")
+            return jsonify({"message": "No statements found for this topic"}), 404  # Not Found
+
+        # Extract only the statements from the query result
+        statements = [row["statemant"] for row in rows]
+
+        return jsonify({"statements": statements}), 200  # Success response
+
+    except Exception as e:
+        return jsonify({"message": f"Error: {str(e)}"}), 500  # Internal Server Error
 
 '''
 File exec
