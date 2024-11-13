@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import HomeButton from './HomeButton';
 
 const TopicPage = () => {
   const { topic } = useParams<{ topic: string }>(); // Extract topic from the URL
@@ -15,8 +16,13 @@ const TopicPage = () => {
   useEffect(() => {
     const fetchStatements = async () => {
       try {
-        const response = await axios.post('http://127.0.0.1:5000/api/getStatements', { topic });
-        setStatements(response.data.statements);
+        // Specifica che la risposta sarà un array di stringhe
+        const response = await axios.post<{ statements: string[] }>('http://127.0.0.1:5000/api/getStatements', { topic });
+
+        // Rimuovere i duplicati usando Set
+        const uniqueStatements = [...new Set(response.data.statements)];
+
+        setStatements(uniqueStatements);
         setLoading(false);
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (err) {
@@ -28,12 +34,13 @@ const TopicPage = () => {
     fetchStatements();
   }, [topic]);
 
-  const handleStatementClick = (statement:string)=>{
-    navigate(`/Home/${topic}/${statement}`)
-  }
+  const handleStatementClick = (statement: string) => {
+    navigate(`/Home/${topic}/${statement}`);
+  };
 
   return (
     <>
+      <HomeButton />
       <h1>You're viewing the "{topic}" topic!</h1>
 
       {loading ? (
@@ -43,20 +50,18 @@ const TopicPage = () => {
       ) : statements.length === 0 ? (
         <p>No statements found for this topic.</p>
       ) : (
-      <div>
-      {statements.map((statement, index) => (
-        <button key={index} onClick={() => handleStatementClick(statement)}>
-          {statement}
-        </button>
-
-      ))}
-      </div>
+        <div>
+          {statements.map((statement, index) => (
+            <button key={index} onClick={() => handleStatementClick(statement)}>
+              {statement}
+            </button>
+          ))}
+        </div>
       )}
 
-      <button onClick={() => navigate(`/Home/${topic}/newStatement`)}>Create new Statement</button>
+      <button className='send-button' onClick={() => navigate(`/Home/${topic}/newStatement`)}>Create new Statement</button>
     </>
   );
 };
 
 export default TopicPage;
-

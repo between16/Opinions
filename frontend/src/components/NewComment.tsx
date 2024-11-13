@@ -4,11 +4,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 import HomeButton from './HomeButton';
 
 
-const NewStatement = () => {
-  const [statement, setStatement] = useState('');
+const NewComment = () => {
   const [comment, setComment] = useState('');
   const navigate = useNavigate();
-  const { topic } = useParams<{ topic: string }>(); // Extract topic from the URL
+  const { topic, statement } = useParams<{ topic: string, statement: string }>();
   const username = localStorage.getItem('username');
 
   async function handleSubmit() : Promise<void> {
@@ -18,7 +17,6 @@ const NewStatement = () => {
         return;
     }
 
-    console.log('Statement:', statement);
     console.log('Comment:', comment);
 
     try {
@@ -48,17 +46,7 @@ const NewStatement = () => {
     <>
     <HomeButton/>
     <h1>{topic}</h1>
-      <div>
-        <label htmlFor="statement">Statement:</label>
-        <input
-          id="statement"
-          type="text"
-          value={statement}  // Make the input a controlled component
-          onChange={(e) => setStatement(e.target.value)}  // Update state on input change
-          placeholder="Enter your statement"
-        />
-      </div>
-
+    <h2>{statement}</h2>
       <div>
         <label htmlFor="comment">Comment:</label>
         <input
@@ -75,4 +63,4 @@ const NewStatement = () => {
   );
 };
 
-export default NewStatement;
+export default NewComment;

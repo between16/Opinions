@@ -178,6 +178,43 @@ def getStatements():
     except Exception as e:
         return jsonify({"message": f"Error: {str(e)}"}), 500  # Internal Server Error
 
+    
+@app.route("/api/getComments", methods=["POST"])
+def getComments():
+    # Get the statement from the request JSON
+    data = request.get_json()
+    statement = data.get("statement")
+
+    print(f"Received statement: {statement}")  # Log per vedere cosa ricevi
+
+    if not statement:
+        return jsonify({"message": "Statement is required"}), 400  # Bad Request if statement is missing
+
+    db = get_db()
+    cur = db.cursor()
+
+    try:
+        # Query the database to fetch comment, sentiment and username for the specific statement
+        cur.execute('SELECT comment, sentiment, username FROM Post WHERE statemant = ?', (statement,))
+        rows = cur.fetchall()
+
+        # If no results, return a message
+        if not rows:
+            print("No comments found for the statement.")
+            return jsonify({"message": "No comments found for this statement"}), 404  # Not Found
+
+        # Extract comments, sentiment and usernames
+        comments_and_sentiments = [{"comment": row["comment"], "sentiment": row["sentiment"], "username": row["username"]} for row in rows]
+
+        return jsonify({"comments": comments_and_sentiments}), 200  # Success response
+
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        return jsonify({"message": f"Error: {str(e)}"}), 500  # Internal Server Error
+
+
+
+
 '''
 File exec
 '''

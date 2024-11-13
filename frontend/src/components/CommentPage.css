@@ -1,0 +1,67 @@
+/* Contenitore del commento */
+.comment-item {
+    display: flex;                /* Layout flessibile per allineare l'avatar e il testo */
+    align-items: center;          /* Centra l'avatar e il testo verticalmente */
+    margin: 10px 0;               /* Spaziatura tra i commenti */
+    padding: 15px;                /* Padding interno per migliorare la leggibilità */
+    border-radius: 8px;           /* Raggio di bordo per angoli arrotondati */
+    font-size: 16px;              /* Imposta la dimensione del testo */
+    transition: background-color 0.3s ease;  /* Transizione morbida per il cambio di colore */
+}
+
+/* Stile per l'avatar (cerchio con la lettera dell'utente) */
+.user-avatar {
+    width: 40px;                  /* Larghezza dell'avatar */
+    height: 40px;                 /* Altezza dell'avatar */
+    border-radius: 50%;           /* Rende l'elemento rotondo */
+    background-color: #333;       /* Colore di sfondo dell'avatar */
+    color: white;                 /* Colore del testo all'interno dell'avatar */
+    display: flex;                /* Flexbox per centrare il testo */
+    align-items: center;          /* Centra verticalmente la lettera */
+    justify-content: center;      /* Centra orizzontalmente la lettera */
+    margin-right: 10px;           /* Distanza tra l'avatar e il nome */
+    font-size: 18px;              /* Dimensione del carattere per l'avatar */
+    font-weight: bold;            /* Grassetto per la lettera */
+}
+
+/* Stile per il nome dell'utente */
+.username {
+    font-weight: bold;            /* Grassetto per il nome utente */
+    font-size: 16px;              /* Dimensione del testo del nome */
+    margin-left: 10px;            /* Distanza tra il nome e il commento */
+    color: #333;                  /* Colore del testo del nome */
+}
+
+/* Stile per il testo del commento */
+.comment-text {
+    margin-top: 5px;              /* Distanza tra il nome e il testo del commento */
+    font-size: 14px;              /* Dimensione del testo del commento */
+    color: black;                  /* Colore del testo del commento */
+}
+
+/* Cambia il colore di sfondo del commento in base al sentiment */
+.comment-item.negative {
+    background-color: #ffcccc;    /* Colore rosso chiaro per sentiment negativi */
+}
+
+.comment-item.positive {
+    background-color: #ccffcc;    /* Colore verde chiaro per sentiment positivi */
+}
+
+.comment-item.neutral {
+    background-color: #f0f0f0;    /* Colore grigio per sentiment neutrali */
+}
+
+/* Pulsante per creare un nuovo commento */
+.sendButton {
+    background-color: #4CAF50;    /* Colore verde per il pulsante */
+    color: white;                 /* Colore del testo del pulsante */
+    padding: 10px 20px;            /* Padding per il pulsante */
+    border: none;                 /* Nessun bordo */
+    border-radius: 5px;           /* Angoli arrotondati */
+    cursor: pointer;              /* Cambia il cursore per l'interazione */
+    font-size: 16px;              /* Dimensione del testo nel pulsante */
+    transition: background-color 0.3s;  /* Transizione morbida per il colore */
+}
+
+

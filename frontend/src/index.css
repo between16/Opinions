@@ -1,0 +1,20 @@
+button:hover {
+    background-color: #45a049;    /* Colore verde più scuro quando si passa sopra */
+}
+
+/* Stile per la lista dei commenti */
+ul {
+    list-style-type: none;         /* Rimuove i puntini della lista */
+    padding: 0;                    /* Rimuove il padding predefinito */
+}
+
+.send-button {
+    background-color: #4CAF50;    /* Colore verde per il pulsante */
+    color: white;                 /* Colore del testo del pulsante */
+    padding: 10px 20px;            /* Padding per il pulsante */
+    border: none;                 /* Nessun bordo */
+    border-radius: 5px;           /* Angoli arrotondati */
+    cursor: pointer;              /* Cambia il cursore per l'interazione */
+    font-size: 16px;              /* Dimensione del testo nel pulsante */
+    transition: background-color 0.3s;  /* Transizione morbida per il colore */
+}
