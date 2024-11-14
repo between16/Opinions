@@ -5,6 +5,10 @@ const HomeButton = () => {
   return (
     <nav>
       <button onClick={()=> {navigate("/Home")}}>Home</button>
+      <button onClick = {()=>{
+        localStorage.removeItem("username");
+        navigate("/")
+      }}>LogOut</button> 
     </nav>
   )
 }

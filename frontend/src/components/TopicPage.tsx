@@ -4,25 +4,28 @@ import axios from 'axios';
 import HomeButton from './HomeButton';
 
 const TopicPage = () => {
-  const { topic } = useParams<{ topic: string }>(); // Extract topic from the URL
+  const { topic } = useParams<{ topic: string }>(); // get topic from URL
   const navigate = useNavigate();
 
-  // State to store statements and loading/error states
+
   const [statements, setStatements] = useState<string[]>([]);
+  const [filteredStatements, setFilteredStatements] = useState<string[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>(''); // serch bar state
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch statements when the page is loaded
+  // Funzione per fetch degli statements
   useEffect(() => {
     const fetchStatements = async () => {
       try {
-        // Specifica che la risposta sarà un array di stringhe
+        // API call to gather statements
         const response = await axios.post<{ statements: string[] }>('http://127.0.0.1:5000/api/getStatements', { topic });
 
-        // Rimuovere i duplicati usando Set
+        // remove duplicates 
         const uniqueStatements = [...new Set(response.data.statements)];
 
         setStatements(uniqueStatements);
+        setFilteredStatements(uniqueStatements); // initially shows all statements
         setLoading(false);
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (err) {
@@ -34,8 +37,21 @@ const TopicPage = () => {
     fetchStatements();
   }, [topic]);
 
+  // handle click on a statment
   const handleStatementClick = (statement: string) => {
     navigate(`/Home/${topic}/${statement}`);
+  };
+
+  // handle research
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const query = event.target.value;
+    setSearchQuery(query);
+
+    //filter all statemets base on the research
+    const filtered = statements.filter((statement) =>
+      statement.toLowerCase().includes(query.toLowerCase()) // Case insensitive search
+    );
+    setFilteredStatements(filtered);
   };
 
   return (
@@ -43,15 +59,24 @@ const TopicPage = () => {
       <HomeButton />
       <h1>You're viewing the "{topic}" topic!</h1>
 
+      {/* serch bar */}
+      <input
+        type="text"
+        value={searchQuery}
+        onChange={handleSearchChange}
+        placeholder="Search statements..."
+        className="search-bar"
+      />
+
       {loading ? (
         <p>Loading statements...</p>
       ) : error ? (
         <p>{error}</p>
-      ) : statements.length === 0 ? (
+      ) : filteredStatements.length === 0 ? (
         <p>No statements found for this topic.</p>
       ) : (
         <div>
-          {statements.map((statement, index) => (
+          {filteredStatements.map((statement, index) => (
             <button key={index} onClick={() => handleStatementClick(statement)}>
               {statement}
             </button>
@@ -59,7 +84,9 @@ const TopicPage = () => {
         </div>
       )}
 
-      <button className='send-button' onClick={() => navigate(`/Home/${topic}/newStatement`)}>Create new Statement</button>
+      <button className="send-button" onClick={() => navigate(`/Home/${topic}/newStatement`)}>
+        Create new Statement
+      </button>
     </>
   );
 };
