@@ -212,7 +212,30 @@ def getComments():
         print(f"Error: {str(e)}")
         return jsonify({"message": f"Error: {str(e)}"}), 500  # Internal Server Error
 
+@app.route('/api/deleteComment', methods=['POST'])
+def delete_comment():
+    data = request.json
+    statement = data.get('statement')
+    comment = data.get('comment')
 
+    if not statement or not comment:
+        return jsonify({"success": False, "message": "Invalid data"}), 400
+
+    try:
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+
+        # Delete comment matching the statement and comment text
+        cursor.execute("""
+            DELETE FROM Post 
+            WHERE statemant = ? AND comment = ? 
+        """, (statement, comment))
+
+        conn.commit()
+        conn.close()
+        return jsonify({"success": True}), 200
+    except Exception as e:
+        return jsonify({"success": False, "message": str(e)}), 500
 
 
 '''

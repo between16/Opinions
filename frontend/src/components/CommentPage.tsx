@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
@@ -7,7 +8,7 @@ import './CommentPage.css';
 const CommentPage = () => {
     const navigate = useNavigate();
     const { topic, statement } = useParams<{ topic: string, statement: string }>();
-
+    const username = localStorage.getItem('username'); // Retrieve username from local storage
 
     const [comments, setComments] = useState<{ comment: string, sentiment: number, username: string }[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -24,7 +25,6 @@ const CommentPage = () => {
                     setError('No comments found.');
                 }
                 setLoading(false);
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             } catch (err) {
                 setError('Failed to load comments.');
                 setLoading(false);
@@ -34,11 +34,25 @@ const CommentPage = () => {
         fetchComments();
     }, [statement]);
 
-    //choose background color for comments based on sentiment analysis result
+    // Function to handle deleting a comment
+    const handleDeleteComment = async (comment: string) => {
+        try {
+            const response = await axios.post('http://127.0.0.1:5000/api/deleteComment', { statement, comment });
+            if (response.data.success) {
+                setComments(comments.filter(c => c.comment !== comment)); // Remove comment from state
+            } else {
+                alert('Failed to delete comment.');
+            }
+        } catch (err) {
+            alert('Error deleting comment.');
+        }
+    };
+
+    // Choose background color based on sentiment analysis
     const getBackgroundColor = (sentiment: number) => {
-        if (sentiment < -0.3) return 'red';    
-        if (sentiment > 0.3) return 'green';   
-        return 'gray';                         
+        if (sentiment < -0.3) return 'red';
+        if (sentiment > 0.3) return 'green';
+        return 'gray';
     };
 
     return (
@@ -50,7 +64,7 @@ const CommentPage = () => {
             <div className='button-section'>
                 <button 
                     className='send-button' 
-                    onClick={() => navigate(`/Home/${topic}/${statement}/newComment`) }> 
+                    onClick={() => navigate(`/Home/${topic}/${statement}/newComment`)}> 
                     Create new Comment
                 </button>
             </div>
@@ -65,17 +79,30 @@ const CommentPage = () => {
                 <div className="comments-list">
                     <ul>
                         {comments.map((commentData, index) => (
-                            <li key={index} className="comment-item" style={{ backgroundColor: getBackgroundColor(commentData.sentiment) }}>
-                            <div className="user-avatar">{commentData.username}</div> {/* Nome completo dell'utente */}
-                            <div className="comment-text">{commentData.comment}</div>
-                        </li>
-                        
+                            <li 
+                                key={index} 
+                                className="comment-item" 
+                                >
+                                
+                                <div className="comment-content">
+                                    <span className="comment-username">{commentData.username}</span>
+                                    <span className="comment-text"
+                                        style={{ backgroundColor: getBackgroundColor(commentData.sentiment) }}>
+                                        {commentData.comment}
+                                    </span>
+                                    {username === commentData.username && (
+                                        <button 
+                                            className="delete-button" 
+                                            onClick={() => handleDeleteComment(commentData.comment)}>
+                                            X
+                                        </button>
+                                    )}
+                                </div>
+                            </li>
                         ))}
                     </ul>
                 </div>
             )}
-
-            
         </>
     );
 };
