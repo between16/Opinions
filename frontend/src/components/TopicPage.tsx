@@ -2,6 +2,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import HomeButton from './HomeButton';
+import "./TopicPage.css"
+
 
 const TopicPage = () => {
   const { topic } = useParams<{ topic: string }>(); // get topic from URL
@@ -57,8 +59,9 @@ const TopicPage = () => {
   return (
     <>
       <HomeButton />
-      <h1>You're viewing the "{topic}" topic!</h1>
+      <h1 className='topic-title'>You're viewing the "{topic}" topic!</h1>
 
+      <div className='input-section'>
       {/* serch bar */}
       <input
         type="text"
@@ -67,7 +70,15 @@ const TopicPage = () => {
         placeholder="Search statements..."
         className="search-bar"
       />
+      </div>
 
+      <div className='send-section'>
+        <button className="send-button" onClick={() => navigate(`/Home/${topic}/newStatement`)}>
+          Create new Statement
+        </button>
+      </div>
+
+      <div className='statement-section'>
       {loading ? (
         <p>Loading statements...</p>
       ) : error ? (
@@ -77,16 +88,18 @@ const TopicPage = () => {
       ) : (
         <div>
           {filteredStatements.map((statement, index) => (
-            <button key={index} onClick={() => handleStatementClick(statement)}>
+            <button 
+              className='statement-button'
+              key={index} onClick={() => handleStatementClick(statement)}>
               {statement}
             </button>
           ))}
         </div>
       )}
+      </div>
+      
 
-      <button className="send-button" onClick={() => navigate(`/Home/${topic}/newStatement`)}>
-        Create new Statement
-      </button>
+      
     </>
   );
 };

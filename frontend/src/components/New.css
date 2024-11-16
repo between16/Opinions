@@ -1,0 +1,39 @@
+.input-statement, .input-comment {
+        margin-bottom: 15px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        background-color: #4f3030;
+        color: #cfa7a7;
+    }
+
+
+.label{
+    color:white;
+    font-size: 20px;
+    margin:1.5%
+}
+
+.statement-section, .comment-section{
+    text-align: center;
+    margin:1%
+}
+
+
+.title{
+    color:white;
+    font-size: 3rem;
+    margin: 5%;
+    padding: 3%;
+}
+
+.button-section{
+    text-align: center;
+}
+
+.statement{
+    color: white;
+    font-size: 2rem;
+    padding: 2%;
+}

@@ -1,0 +1,41 @@
+.statement-button{
+        width: 100%;
+        background-color: #dabc9eb4;
+        color: black;
+        font-weight: bold;
+        font-family: 'Times New Roman', Times, serif;
+        border: none;
+        border-radius: 10px;
+        border-style: solid;
+        border-color: rgb(137, 34, 34);
+        cursor: pointer;
+        margin: 0.4%;
+        font-weight: bold; 
+        font-size: 2em; 
+}
+
+.search-bar{
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #4f3030;
+    color: #cfa7a7;
+}
+
+.input-section{
+    text-align: center;
+    margin-top: 2%;
+}
+
+.topic-title{
+    color: white;
+    text-align: center;
+    font-size: 3rem;
+}
+
+.send-section{
+    text-align: center;
+    margin:2%
+}

@@ -1,0 +1,19 @@
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #4f3030;
+    padding: 5px 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+button {
+    background-color: #dabc9eb4;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 0.8em;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+}

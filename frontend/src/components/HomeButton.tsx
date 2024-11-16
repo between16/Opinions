@@ -1,16 +1,28 @@
 import { useNavigate } from 'react-router-dom';
+import "./HomeButton.css";
 
 const HomeButton = () => {
-    const navigate = useNavigate()
-  return (
-    <nav>
-      <button onClick={()=> {navigate("/Home")}}>Home</button>
-      <button onClick = {()=>{
-        localStorage.removeItem("username");
-        navigate("/")
-      }}>LogOut</button> 
-    </nav>
-  )
-}
+    const navigate = useNavigate();
 
-export default HomeButton
+    return (
+        <nav>
+            <button 
+                className="home" 
+                onClick={() => navigate("/Home")}
+            >
+                Home
+            </button>
+            <button 
+                className="logout" 
+                onClick={() => {
+                    localStorage.removeItem("username");
+                    navigate("/");
+                }}
+            >
+                LogOut
+            </button>
+        </nav>
+    );
+};
+
+export default HomeButton;

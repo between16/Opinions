@@ -18,3 +18,7 @@ ul {
     font-size: 16px;              /* Dimensione del testo nel pulsante */
     transition: background-color 0.3s;  /* Transizione morbida per il colore */
 }
+
+body{
+    background-color: #141414;
+}

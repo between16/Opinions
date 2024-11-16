@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import "./Login.css"
 
 // Define the response types expected from the backend
 interface LoginResponse {

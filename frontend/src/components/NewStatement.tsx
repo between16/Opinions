@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import HomeButton from './HomeButton';
+import "./New.css"
 
 
 const NewStatement = () => {
@@ -47,11 +48,11 @@ const NewStatement = () => {
   return (
     <>
     <HomeButton/>
-    <h1>{topic}</h1>
-      <div>
-        <label htmlFor="statement">Statement:</label>
+    <h1 className='title'>Topic: "{topic}"</h1>
+      <div className='statement-section'>
+        <label className='label' htmlFor="statement">Statement:</label>
         <input
-          id="statement"
+          className='input-statement'
           type="text"
           value={statement}  // Make the input a controlled component
           onChange={(e) => setStatement(e.target.value)}  // Update state on input change
@@ -59,10 +60,10 @@ const NewStatement = () => {
         />
       </div>
 
-      <div>
-        <label htmlFor="comment">Comment:</label>
+      <div className='comment-section'>
+        <label className='label' htmlFor="comment">Comment:</label>
         <input
-          id="comment"
+          className='input-comment'
           type="text"
           value={comment}  // Make the input a controlled component
           onChange={(e) => setComment(e.target.value)}  // Update state on input change
@@ -70,7 +71,10 @@ const NewStatement = () => {
         />
       </div>
 
-      <button className='send-button' onClick={handleSubmit}>Submit</button>
+      <div className='button-section'>
+        <button className='send-button' onClick={handleSubmit}>Submit</button>
+      </div>
+      
     </>
   );
 };
