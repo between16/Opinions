@@ -25,7 +25,7 @@
     padding: 20px;
     font-size: 20px;
     border-radius: 40%;
-    margin:2%
+    margin:1%
 }
 
 .comment-text {
@@ -65,4 +65,32 @@
 .statement{
     text-align: center;
     font-size: 1 rem;
+}
+
+.comment-likes {
+    margin-left: auto; /* Push likes to the right */
+    font-size: 16px;
+    color: #666;
+    font-weight: bold;
+    padding: 5px;
+}
+
+
+.like-button {
+    background-color: transparent;
+    border: none;
+    color: #ff4d4d;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: transform 0.2s ease;
+}
+
+.like-button:hover {
+    transform: scale(1.2); /* Slight zoom effect on hover */
+}
+
+.like-button:active {
+    transform: scale(1); /* Reset zoom when pressed */
 }

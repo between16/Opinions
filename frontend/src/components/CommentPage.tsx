@@ -10,10 +10,13 @@ const CommentPage = () => {
     const { topic, statement } = useParams<{ topic: string, statement: string }>();
     const username = localStorage.getItem('username'); // Retrieve username from local storage
 
-    const [comments, setComments] = useState<{ comment: string, sentiment: number, username: string }[]>([]);
+    //data that are going to be gathered from backend
+    const [comments, setComments] = useState<{likes: number; comment: string, sentiment: number, username: string }[]>([]);
+
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
+    //get comments from backend
     useEffect(() => {
         const fetchComments = async () => {
             try {
@@ -48,6 +51,30 @@ const CommentPage = () => {
         }
     };
 
+    const handleLikeComment = async (comment: string) => {
+        try {
+            const response = await axios.post('http://127.0.0.1:5000/api/likeComment', { 
+                statement, 
+                comment, 
+                username 
+            });
+    
+            if (response.data.success) {
+                // Increment the like count in the state
+                setComments(comments.map(c => 
+                    c.comment === comment ? { ...c, likes: c.likes + 1 } : c
+                ));
+            } else if (response.data.message === "User already liked this comment") {
+                alert("You have already liked this comment.");
+            } else {
+                alert('Failed to like the comment.');
+            }
+        } catch (err) {
+            console.log("you can not like the same comment twice")
+        }
+    };
+    
+
     // Choose background color based on sentiment analysis
     const getBackgroundColor = (sentiment: number) => {
         if (sentiment < -0.3) return 'red';
@@ -79,17 +106,19 @@ const CommentPage = () => {
                 <div className="comments-list">
                     <ul>
                         {comments.map((commentData, index) => (
-                            <li 
-                                key={index} 
-                                className="comment-item" 
-                                >
-                                
+                            <li key={index} className="comment-item">
                                 <div className="comment-content">
                                     <span className="comment-username">{commentData.username}</span>
-                                    <span className="comment-text"
+                                    <span 
+                                        className="comment-text" 
                                         style={{ backgroundColor: getBackgroundColor(commentData.sentiment) }}>
                                         {commentData.comment}
                                     </span>
+                                    <button 
+                                        className="like-button" 
+                                        onClick={() => handleLikeComment(commentData.comment)}>
+                                        ❤️ {commentData.likes}
+                                    </button>
                                     {username === commentData.username && (
                                         <button 
                                             className="delete-button" 
@@ -99,6 +128,8 @@ const CommentPage = () => {
                                     )}
                                 </div>
                             </li>
+
+                        
                         ))}
                     </ul>
                 </div>

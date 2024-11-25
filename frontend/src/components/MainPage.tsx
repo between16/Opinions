@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "./MainPage.css"
+import HomeButton from './HomeButton';
 
 const MainPage = () => {
   const topics = ["Cinema", "F1", "Soccer", "Politic", "Art", "Books", "Study", "Art", "Clothing", "Photography", "Geography", "Lecterature", "Minerals", "Games", "IT", "Food", "Cooking"];
@@ -28,8 +29,8 @@ const MainPage = () => {
 
   return (
     <>
-      <div>MainPage</div>
 
+      <HomeButton/>
       <div className='input-section'>
       {/* Search Bar */}
       <input
