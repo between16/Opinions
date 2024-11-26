@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import HomeButton from './HomeButton';
+import CommentSorter from './CommentSorter';
 import './CommentPage.css';  
 
 const CommentPage = () => {
@@ -82,6 +83,15 @@ const CommentPage = () => {
         return 'gray';
     };
 
+
+    const sortComments = (sortType: 'likes' | 'sentiment', order: 'asc' | 'desc') => {
+        const sorted = [...comments].sort((a, b) => {
+            const compareValue = sortType === 'likes' ? a.likes - b.likes : a.sentiment - b.sentiment;
+            return order === 'asc' ? compareValue : -compareValue;
+        });
+        setComments(sorted);
+    };
+
     return (
         <>
             <HomeButton />
@@ -95,6 +105,9 @@ const CommentPage = () => {
                     Create new Comment
                 </button>
             </div>
+
+            {/* Aggiungere il sorter */}
+            <CommentSorter onSort={sortComments} />
 
             {loading ? (
                 <p>Loading comments...</p>
@@ -128,8 +141,6 @@ const CommentPage = () => {
                                     )}
                                 </div>
                             </li>
-
-                        
                         ))}
                     </ul>
                 </div>

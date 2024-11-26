@@ -25,7 +25,6 @@
     color:white;
     font-size: 3rem;
     margin: 5%;
-    padding: 3%;
 }
 
 .button-section{
@@ -35,5 +34,20 @@
 .statement{
     color: white;
     font-size: 2rem;
-    padding: 2%;
+    padding: 1%;
+}
+
+
+.input-comment, .input-statement {
+    width: 50%;
+    min-height: 50px; /* Start with a minimum height */
+    max-height: 200px; /* Optional: limit how tall it can grow */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #4f3030;
+    color: #cfa7a7;
+    resize: none; /* Prevent manual resizing; optional */
+
 }

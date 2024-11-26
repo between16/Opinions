@@ -49,27 +49,36 @@ const NewStatement = () => {
     <>
     <HomeButton/>
     <h1 className='title'>Topic: "{topic}"</h1>
-      <div className='statement-section'>
-        <label className='label' htmlFor="statement">Statement:</label>
-        <input
+    <div className='statement-section'>
+    <label className='label' htmlFor="statement">Statement:</label>
+    <br/>
+        <textarea
           className='input-statement'
-          type="text"
-          value={statement}  // Make the input a controlled component
-          onChange={(e) => setStatement(e.target.value)}  // Update state on input change
+          value={statement}  // Make the textarea a controlled component
+          onChange={(e) => {
+            setStatement(e.target.value);
+            e.target.style.height = 'auto'; // Reset altezza
+            e.target.style.height = `${e.target.scrollHeight}px`; // Calcola altezza in base al contenuto
+          }}
           placeholder="Enter your statement"
         />
       </div>
 
       <div className='comment-section'>
         <label className='label' htmlFor="comment">Comment:</label>
-        <input
+        <br/>
+        <textarea
           className='input-comment'
-          type="text"
-          value={comment}  // Make the input a controlled component
-          onChange={(e) => setComment(e.target.value)}  // Update state on input change
+          value={comment}  // Make the textarea a controlled component
+          onChange={(e) => {
+            setComment(e.target.value);
+            e.target.style.height = 'auto'; // Reset altezza
+            e.target.style.height = `${e.target.scrollHeight}px`; // Calcola altezza in base al contenuto
+          }}
           placeholder="Enter your comment"
         />
       </div>
+
 
       <div className='button-section'>
         <button className='send-button' onClick={handleSubmit}>Submit</button>

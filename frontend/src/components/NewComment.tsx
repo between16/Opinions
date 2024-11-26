@@ -50,13 +50,18 @@ const NewComment = () => {
     <h2 className='statement'>Statement: "{statement}"</h2>
       <div className='comment-section'>
         <label className='label' htmlFor="comment">Comment:</label>
-        <input
-          className='input-comment'
-          type="text"
-          value={comment}  // Make the input a controlled component
-          onChange={(e) => setComment(e.target.value)}  // Update state on input change
+        <br/>
+        <textarea
+          className="input-comment"
+          value={comment}
+          onChange={(e) => {
+            setComment(e.target.value);
+            e.target.style.height = 'auto'; // Reset height
+            e.target.style.height = `${e.target.scrollHeight}px`; // Set height based on content
+          }}
           placeholder="Enter your comment"
         />
+
       </div>
 
     <div className='button-section'>
