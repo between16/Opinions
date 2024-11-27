@@ -215,6 +215,74 @@ def like_comment():
         return jsonify({"success": True}), 200
     except Exception as e:
         return jsonify({"success": False, "message": str(e)}), 500
+    
+#update username
+@app.route("/api/updateUsername", methods=["POST"])
+def update_username():
+    """Update the username of a user and all associated posts."""
+    data = request.get_json()
+    new_username = data.get("newValue")  # New value for the username
+    old_username = data.get("oldUsername")  # Current username (old value)
+
+    print(f"oldUsername: {old_username}, newUsername: {new_username}")
+
+    if not new_username or not old_username:
+        return jsonify({"message": "Both new username and old username are required"}), 400
+
+    db = get_db()
+    cur = db.cursor()
+
+    try:
+        # Start a transaction using SQL commands
+        cur.execute("BEGIN TRANSACTION;")
+
+        # Update the username in the User table
+        cur.execute("UPDATE User SET username = ? WHERE username = ?", (new_username, old_username))
+        if cur.rowcount == 0:
+            db.rollback()
+            return jsonify({"message": "User not found or no changes made"}), 404
+
+        # Update the username in the Post table for all posts by the old username
+        cur.execute("UPDATE Post SET username = ? WHERE username = ?", (new_username, old_username))
+
+        # Commit the transaction
+        db.commit()
+
+        return jsonify({"message": "Username and associated posts updated successfully"}), 200
+    except Exception as e:
+        # In case of error, rollback the transaction
+        db.rollback()
+        return jsonify({"message": f"Error: {str(e)}"}), 500
+
+
+
+
+#Update user password
+@app.route("/api/updatePassword", methods=["POST"])
+def update_password():
+    """Update the password of a user."""
+    data = request.get_json()
+    new_password = data.get("newValue")  # new password
+    old_username = data.get("oldUsername")  # username
+
+    if not new_password or not old_username:
+        return jsonify({"message": "Both new password and old username are required"}), 400
+
+    db = get_db()
+    cur = db.cursor()
+
+    try:
+        # Hash della nuova password
+        hashed_password = generate_password_hash(new_password)
+        # Aggiorna la password dell'utente identificato da old_username
+        cur.execute("UPDATE User SET user_password = ? WHERE username = ?", (hashed_password, old_username))
+        if cur.rowcount == 0:  # Controlla se è stata effettuata una modifica
+            return jsonify({"message": "User not found or no changes made"}), 404
+        db.commit()
+        return jsonify({"message": "Password updated successfully"}), 200
+    except Exception as e:
+        return jsonify({"message": f"Error: {str(e)}"}), 500
+
 
 
 if __name__ == '__main__':

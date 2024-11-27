@@ -14,6 +14,7 @@ const CommentSorter: React.FC<CommentSorterProps> = ({ onSort }) => {
         <div className="comment-sorter">
             <label htmlFor="sort-selector">Sort comments by:</label>
             <select id="sort-selector" onChange={handleSortChange}>
+                <option>Choose Sorting method</option>
                 <option value="likes-desc">Most likes</option>
                 <option value="likes-asc">Fewest likes</option>
                 <option value="sentiment-desc">Highest sentiment</option>

@@ -3,6 +3,7 @@ import "./HomeButton.css";
 
 const HomeButton = () => {
     const navigate = useNavigate();
+    const username = localStorage.getItem('username');
 
     return (
         <nav>
@@ -12,6 +13,14 @@ const HomeButton = () => {
             >
                 Home
             </button>
+
+            <button
+                className = "user-button"
+                onClick={()=> navigate("/Home/User")}
+            >
+                {username}
+            </button>
+
             <button 
                 className="logout" 
                 onClick={() => {

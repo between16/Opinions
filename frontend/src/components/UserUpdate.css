@@ -1,0 +1,29 @@
+.update-form input {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #4f3030;
+    color: #cfa7a7;
+    padding: 1%;
+}
+
+.update-div{
+    text-align: center;
+}
+
+.update-h2{
+    color: white;
+    text-align: center;
+    padding: 2%;
+}
+
+.update-label{
+    color: white;
+    margin:2%;
+}
+
+.update-button{
+    margin:2%;
+}

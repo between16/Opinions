@@ -18,13 +18,14 @@ const Login = () => {
         password: userPassword,
       });
       if (response.data.message === "Incorrect") {
-        alert("Credenziali errate. Riprova.");
+        alert("Username or password, incorrect. Retry");
         navigate("/");
       } else {
         navigate("/Home");
       }
     } catch (error) {
       console.error(error);
+      alert("username or password incorrect. Retry")
     }
   }
 
