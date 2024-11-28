@@ -283,6 +283,73 @@ def update_password():
     except Exception as e:
         return jsonify({"message": f"Error: {str(e)}"}), 500
 
+#send user all data for pesonal page, various stats about the profile
+@app.route("/api/userStats", methods=["POST"])
+def user_stats():
+    """
+    Retrieve user statistics:
+    1. Most liked comment by the user.
+    2. Percentage distribution of topics the user commented on.
+    3. Counts of comments per topic.
+    """
+    data = request.get_json()
+    username = data.get("username")
+
+    if not username:
+        return jsonify({"message": "Username is required"}), 400
+
+    db = get_db()
+    cur = db.cursor()
+
+    try:
+        # Most liked comment with topic and likes
+        cur.execute("""
+            SELECT comment, topic, like_number AS likes, statement
+            FROM Post
+            WHERE username = ?
+            ORDER BY likes DESC
+            LIMIT 1
+        """, (username,))
+        most_liked_comment = cur.fetchone()
+
+        # Prepare response data
+        if most_liked_comment:
+            most_liked_comment_data = {
+                "comment": most_liked_comment["comment"],
+                "likes": most_liked_comment["likes"],
+                "topic": most_liked_comment["topic"],
+                "statement": most_liked_comment["statement"] or f"This comment with {most_liked_comment['likes']} likes is about {most_liked_comment['topic']}."  # Default statement if none exists
+            }
+        else:
+            most_liked_comment_data = None
+
+        # Topic counts and percentages
+        cur.execute("""
+            SELECT topic, COUNT(*) as count
+            FROM Post
+            WHERE username = ?
+            GROUP BY topic
+        """, (username,))
+        topic_rows = cur.fetchall()
+
+        # Prepare the topic counts and percentages
+        topic_counts = {row["topic"]: row["count"] for row in topic_rows}
+        total_comments = sum(topic_counts.values())
+        topic_percentages = {topic: (count / total_comments) * 100 for topic, count in topic_counts.items()}
+
+        # Consolidate data into a single response
+        response_data = {
+            "mostLikedComment": most_liked_comment_data,
+            "topicPercentages": topic_percentages,
+            "topicCounts": topic_counts
+        }
+
+        return jsonify(response_data), 200
+    except Exception as e:
+        return jsonify({"message": f"Error: {str(e)}"}), 500
+
+
+
 
 
 if __name__ == '__main__':

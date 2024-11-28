@@ -1,3 +1,35 @@
 .user-title{
     color: white;
 }
+.button-group {
+    margin-bottom: 20px;
+  }
+  
+  .most-liked-comment {
+    margin: 20px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  .charts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .chart {
+    flex: 1;
+    min-width: 300px;
+    max-height: 400px;
+  }
+  
+  .error {
+    color: red;
+    margin: 10px 0;
+  }
+  
+  .bar-chart-title, .pie-chart-title{
+    color:white;
+  }

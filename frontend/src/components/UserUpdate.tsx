@@ -37,9 +37,7 @@ const UserUpdate = () => {
             navigate("/Home/User"); // Redirect alla homepage o posizione desiderata
             if (type === "username") {
                 localStorage.setItem("username", value);
-              } else {
-                console.log("update");
-              }              
+              }             
           } else {
             alert(`Error: ${data.message}`);
           }
